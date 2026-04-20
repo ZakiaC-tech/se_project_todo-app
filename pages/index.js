@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 import { initialTodos, validationConfig } from "../utils/constants.js";
 import Todo from "../components/Todo.js";
 import FormValidator from "../components/FormValidator.js";
-import Section from "../components/section.js";
+import Section from "../components/Section.js";
 
 // ===== DOM ELEMENTS =====
 const addTodoButton = document.querySelector(".button_action_add");
@@ -14,17 +14,17 @@ const addTodoForm = document.querySelector("#add-todo-popup .popup__form");
 const addTodoFormValidator = new FormValidator(validationConfig, addTodoForm);
 addTodoFormValidator.enableValidation();
 
-// ===== COUNTER (DOM-BASED — SINGLE SOURCE OF TRUTH) =====
-const updateCounter = () => {
+// ===== COUNTER (DOM SOURCE OF TRUTH) =====
+function updateCounter() {
   const todos = Array.from(document.querySelectorAll(".todo"));
 
   const completedCount = todos.filter((todo) => {
     const checkbox = todo.querySelector(".todo__completed");
-    return checkbox && checkbox.checked;
+    return checkbox?.checked;
   }).length;
 
   counterText.textContent = `Showing ${completedCount} out of ${todos.length} completed`;
-};
+}
 
 // ===== TODO CREATION =====
 function generateTodo(data) {

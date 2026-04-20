@@ -1,5 +1,8 @@
 export default class Todo {
-  constructor(data, selector) {
+  constructor(data, selector, { onCheck, onDelete } = {}) {
+    this._onCheck = onCheck;
+    this._onDelete = onDelete;
+
     this._id = data.id || crypto.randomUUID();
     this._name = data.name;
     this._completed = data.completed ?? false;
@@ -20,7 +23,8 @@ export default class Todo {
     this._labelEl.setAttribute("for", `todo-${this._id}`);
 
     const dueDate = new Date(this._date);
-    this._dateEl.textContent = !isNaN(dueDate)
+
+    this._dateEl.textContent = !isNaN(dueDate.getTime())
       ? `Due: ${dueDate.toLocaleString("en-US", {
           year: "numeric",
           month: "short",
@@ -30,18 +34,22 @@ export default class Todo {
   }
 
   _handleDelete() {
+    this._onDelete?.(this._completed);
+
     this._element.remove();
     this._element = null;
   }
 
   _handleToggleComplete() {
     this._completed = this._checkboxEl.checked;
+
+    this._onCheck?.(this._completed);
   }
 
   _setEventListeners() {
     this._deleteBtn.addEventListener("click", () => this._handleDelete());
     this._checkboxEl.addEventListener("change", () =>
-      this._handleToggleComplete()
+      this._handleToggleComplete(),
     );
   }
 

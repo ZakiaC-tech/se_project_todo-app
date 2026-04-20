@@ -107,3 +107,15 @@
     content: "";
   }
 }
+.todos__list {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.todo__delete-btn:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
