@@ -33,4 +33,4 @@ The project follows best practices for code organization, accessibility, and mai
 
 This project is deployed on GitHub Pages:
 
-- https://zakiac-tech.github.io/project-7-todo-app/
+https://zakiac-tech.github.io/se_project_todo-app/

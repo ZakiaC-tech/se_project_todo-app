@@ -14,13 +14,13 @@ const addTodoForm = document.querySelector("#add-todo-popup .popup__form");
 const addTodoFormValidator = new FormValidator(validationConfig, addTodoForm);
 addTodoFormValidator.enableValidation();
 
-// ===== COUNTER (DOM SOURCE OF TRUTH) =====
+// ===== COUNTER =====
 function updateCounter() {
   const todos = Array.from(document.querySelectorAll(".todo"));
 
   const completedCount = todos.filter((todo) => {
     const checkbox = todo.querySelector(".todo__completed");
-    return checkbox?.checked;
+    return checkbox && checkbox.checked;
   }).length;
 
   counterText.textContent = `Showing ${completedCount} out of ${todos.length} completed`;
@@ -31,16 +31,6 @@ function generateTodo(data) {
   const todo = new Todo(data, "#todo-template");
   const todoElement = todo.getView();
 
-  const checkbox = todoElement.querySelector(".todo__completed");
-  const deleteBtn = todoElement.querySelector(".todo__delete-btn");
-
-  checkbox.addEventListener("change", updateCounter);
-
-  deleteBtn.addEventListener("click", () => {
-    todoElement.remove();
-    updateCounter();
-  });
-
   return todoElement;
 }
 
@@ -49,6 +39,18 @@ const todoSection = new Section({
   items: initialTodos,
   renderer: (item) => {
     const todoElement = generateTodo(item);
+
+    // attach listeners AFTER element is created
+    const checkbox = todoElement.querySelector(".todo__completed");
+    const deleteBtn = todoElement.querySelector(".todo__delete-btn");
+
+    checkbox.addEventListener("change", updateCounter);
+
+    deleteBtn.addEventListener("click", () => {
+      todoElement.remove();
+      updateCounter();
+    });
+
     todoSection.addItem(todoElement);
   },
   containerSelector: ".todos__list",
@@ -67,6 +69,17 @@ const addTodoPopup = new PopupWithForm("#add-todo-popup", (data) => {
   };
 
   const todoElement = generateTodo(todoData);
+
+  const checkbox = todoElement.querySelector(".todo__completed");
+  const deleteBtn = todoElement.querySelector(".todo__delete-btn");
+
+  checkbox.addEventListener("change", updateCounter);
+
+  deleteBtn.addEventListener("click", () => {
+    todoElement.remove();
+    updateCounter();
+  });
+
   todoSection.addItem(todoElement);
 
   addTodoForm.reset();
