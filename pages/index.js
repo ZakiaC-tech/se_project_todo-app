@@ -98,4 +98,4 @@ addTodoButton.addEventListener("click", () => {
 
 // ===== INITIAL RENDER =====
 todoSection.renderItems();
-updateCounter();
+requestAnimationFrame(updateCounter);
